@@ -1,0 +1,58 @@
+body{
+    background:#0b0b0b;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.profile-container{
+    background:#1a001f;
+    padding:40px;
+    width:400px;
+    border-radius:10px;
+    box-shadow:0 0 20px #8000ff;
+}
+
+h1{
+    text-align:center;
+    color:#bb66ff;
+}
+
+label{
+    color:white;
+    display:block;
+    margin-top:10px;
+}
+
+input,textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    background:#2b0033;
+    border:none;
+    border-radius:5px;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:20px;
+    background:#8000ff;
+    border:none;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#a64dff;
+}
+
+.home-btn{
+    margin-top:10px;
+    background:#444;
+}

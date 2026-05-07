@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mood Dashboard</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:0;
+    background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+    color:white;
+    transition:0.5s;
+}
+
+/* HEADER */
+header{
+    background:#1a1a2e;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+}
+header a{
+    color:#fff;
+    text-decoration:none;
+    margin-left:15px;
+}
+
+/* CONTAINER */
+.container{
+    max-width:1000px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    backdrop-filter:blur(10px);
+}
+
+/* MOOD BUTTONS */
+.mood-buttons button{
+    padding:10px 18px;
+    margin:5px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    background:#8e44ad;
+    color:white;
+}
+
+/* AVATAR */
+.avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+}
+
+/* FLOATING EMOJI */
+.floating{
+    position:fixed;
+    font-size:30px;
+    animation:float 4s linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(0)}
+    to{transform:translateY(-500px)}
+}
+
+/* FOCUSED MODE */
+.focus-mode{
+    background:black !important;
+    color:#00ffcc;
+}
+.tired-mode{
+    background: linear-gradient(120deg, #2c3e50, #4b6cb7);
+    color: #dcdcdc;
+}
+
+/* AHA PANEL */
+#ahaBox{
+    font-size:18px;
+    margin-top:10px;
+}
+
+
+#chart{
+    height:300px !important;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>🧠 Mood Intelligence Center</h2>
+    <div>
+        <a href="index.html">🏠 Home</a>
+        <a href="history.html">📜 History</a>
+    </div>
+</header>
+
+<div class="container">
+
+<!-- MOOD -->
+<div class="card">
+    <h3>Select Your Mood</h3>
+    <div class="mood-buttons">
+        <button onclick="setMood('happy')">😊 Happy</button>
+        <button onclick="setMood('relaxed')">😌 Relaxed</button>
+        <button onclick="setMood('focused')">🎯 Focused</button>
+        <button onclick="setMood('tired')">😴 Tired</button>
+    </div>
+</div>
+
+<!-- COACH -->
+<div class="card">
+    <h3>🤖 Mood Coach</h3>
+    <div style="display:flex;gap:20px;">
+        <img id="avatar" class="avatar">
+        <div>
+            <h4 id="coachText">Select mood</h4>
+            <button onclick="saveMood()">Save Mood</button>
+        </div>
+    </div>
+</div>
+
+<!-- AHA DASHBOARD -->
+<div class="card">
+    <h3>✨ AHA Smart Suggestions</h3>
+    <div id="ahaBox">Select mood to see recommendations</div>
+</div>
+
+<!-- CHART -->
+<div class="card">
+    <h3>📊 Mood Chart</h3>
+    <canvas id="chart"></canvas>
+</div>
+
+<!-- GAME -->
+<div class="card">
+    <h3>🎮 Mood Games</h3>
+    <div id="gameArea"></div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+/* ================= CORE ================= */
+
+let selectedMood=null;
+let moodHistory=JSON.parse(localStorage.getItem("moodHistory"))||[];
+
+let gameTimer = null;
+let gameInterval = null;
+
+const moodData={
+    happy:{
+        msg:"Stay awesome 😊",
+        avatar:"https://cdn-icons-png.flaticon.com/512/742/742751.png",
+        aha:"🎉 Try fun products, colorful clothes, games!"
+    },
+    relaxed:{
+        msg:"Stay calm 😌",
+        avatar:"https://cdn-icons-png.flaticon.com/512/742/742760.png",
+        aha:"🧘 Meditation items, candles, soft music"
+    },
+    focused:{
+        msg:"Stay sharp 🎯",
+        avatar:"https://cdn-icons-png.flaticon.com/512/742/742774.png",
+        aha:"📚 Books, productivity tools, planners"
+    },
+    tired:{
+        msg:"Take rest 😴",
+        avatar:"https://cdn-icons-png.flaticon.com/512/742/742752.png",
+        aha:"🛏️ Comfort wear, pillows, relaxing tea"
+    }
+};
+
+/* ================= MOOD SELECT ================= */
+
+function setMood(m){
+
+    selectedMood=m;
+
+    document.getElementById("coachText").innerText=moodData[m].msg;
+    document.getElementById("avatar").src=moodData[m].avatar;
+    document.getElementById("ahaBox").innerText=moodData[m].aha;
+
+    applyTheme(m);
+
+    setTimeout(()=>{   // ensures DOM update before game loads
+        loadGame(m);
+    },100);
+
+    renderChart();
+}
+
+/* ================= THEMES ================= */
+
+function applyTheme(mood){
+
+    document.body.className="";
+
+    if(mood==="happy"){
+        document.body.style.background="linear-gradient(120deg,#f6d365,#fda085)";
+        spawnEmoji();
+    }
+
+    if(mood==="relaxed"){
+        document.body.style.background="linear-gradient(120deg,#89f7fe,#66a6ff)";
+    }
+
+    if(mood==="focused"){
+        document.body.classList.add("focus-mode");
+    }
+
+    if(mood==="tired"){
+        document.body.style.background="#111";
+        document.body.classList.add("tired-mode");
+    }
+}
+
+/* FLOATING EMOJI */
+
+function spawnEmoji(){
+    for(let i=0;i<10;i++){
+        let e=document.createElement("div");
+        e.innerText="😊";
+        e.className="floating";
+        e.style.left=Math.random()*100+"%";
+        e.style.top="100%";
+        document.body.appendChild(e);
+
+        setTimeout(()=>e.remove(),4000);
+    }
+}
+
+/* ================= SAVE ================= */
+
+function saveMood(){
+    if(!selectedMood){
+        alert("Select mood first");
+        return;
+    }
+
+    moodHistory.push({
+        mood:selectedMood,
+        time:new Date().toLocaleString()
+    });
+
+    localStorage.setItem("moodHistory",JSON.stringify(moodHistory));
+
+    renderChart();
+alert("Saved!");
+}
+
+/* ================= CHART ================= */
+
+let chartInstance = null;
+
+function renderChart(){
+
+    let count={happy:0,relaxed:0,focused:0,tired:0};
+
+    moodHistory = JSON.parse(localStorage.getItem("moodHistory")) || [];
+
+    moodHistory.forEach(m=>{
+        if(count[m.mood] !== undefined){
+            count[m.mood]++;
+        }
+    });
+
+    const ctx = document.getElementById("chart");
+
+    if(chartInstance){
+        chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Happy","Relaxed","Focused","Tired"],
+            datasets: [{
+                label: "Mood Count",
+                data: [
+                    count.happy,
+                    count.relaxed,
+                    count.focused,
+                    count.tired
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
+
+
+
+/* ================= REALISTIC GAME ENGINE ================= */
+
+function clearGameTimers(){
+    if(gameTimer) clearInterval(gameTimer);
+    if(gameInterval) clearInterval(gameInterval);
+}
+
+function loadGame(mood){
+    console.log("Loading game for mood:", mood);
+    clearGameTimers();
+    const gameArea = document.getElementById("gameArea");
+    gameArea.innerHTML = "";
+
+    /* ========= HAPPY: 20 SECOND CATCH GAME ========= */
+    if(mood === "happy"){
+        let score = 0;
+        let timeLeft = 20;
+        let highScore = localStorage.getItem("happyHigh") || 0;
+
+        gameArea.innerHTML = `
+            <h4>Score: <span id="score">0</span> | Time: <span id="time">20</span>s</h4>
+            <h5>High Score: ${highScore}</h5>
+            <div id="playArea" style="position:relative;height:300px;border:2px solid #ccc;"></div>
+            <button class="game-btn" onclick="loadGame('happy')">Restart</button>
+        `;
+
+        const scoreEl = document.getElementById("score");
+        const timeEl = document.getElementById("time");
+        const playArea = document.getElementById("playArea");
+
+        function spawn(){
+            const emoji=document.createElement("div");
+            emoji.innerText="😄";
+            emoji.style.position="absolute";
+            emoji.style.fontSize="30px";
+            emoji.style.left=Math.random()*260+"px";
+            emoji.style.top=Math.random()*260+"px";
+            emoji.style.cursor="pointer";
+
+            emoji.onclick=function(){
+                score++;
+                scoreEl.innerText=score;
+                emoji.remove();
+            };
+
+            playArea.appendChild(emoji);
+            setTimeout(()=>emoji.remove(),1500);
+        }
+
+        gameInterval=setInterval(spawn,700);
+
+        gameTimer=setInterval(()=>{
+            timeLeft--;
+            timeEl.innerText=timeLeft;
+            if(timeLeft<=0){
+                clearGameTimers();
+                if(score>highScore){
+                    localStorage.setItem("happyHigh",score);
+                }
+                playArea.innerHTML="<h2>Game Over! Final Score: "+score+"</h2>";
+            }
+        },1000);
+    }
+
+    /* ========= RELAXED: GUIDED BREATHING ========= */
+    if(mood === "relaxed"){
+        gameArea.innerHTML=`
+            <div style="text-align:center;">
+                <div id="circle" style="width:150px;height:150px;border-radius:50%;background:#2ecc71;margin:20px auto;transition:4s;"></div>
+                <h3 id="breathText">Inhale...</h3>
+                <button class="game-btn" onclick="loadGame('relaxed')">Restart</button>
+            </div>
+        `;
+        let circle=document.getElementById("circle");
+        let text=document.getElementById("breathText");
+        let inhale=true;
+
+        gameTimer=setInterval(()=>{
+            if(inhale){
+                circle.style.transform="scale(1.6)";
+                text.innerText="Inhale...";
+            }else{
+                circle.style.transform="scale(1)";
+                text.innerText="Exhale...";
+            }
+            inhale=!inhale;
+        },4000);
+    }
+
+    /* ========= FOCUSED: REACTION TEST ========= */
+    if(mood === "focused"){
+        gameArea.innerHTML=`
+            <div style="text-align:center;">
+                <div id="box" style="width:200px;height:200px;background:red;margin:20px auto;"></div>
+                <h3 id="result">Wait for green...</h3>
+                <button class="game-btn" onclick="loadGame('focused')">Retry</button>
+            </div>
+        `;
+
+        const box=document.getElementById("box");
+        const result=document.getElementById("result");
+        let startTime;
+        let ready=false;
+
+        const delay=Math.random()*3000+2000;
+
+        setTimeout(()=>{
+            box.style.background="green";
+            startTime=Date.now();
+            ready=true;
+            result.innerText="CLICK NOW!";
+        },delay);
+
+        box.onclick=function(){
+            if(!ready){
+                result.innerText="Too Early!";
+            }else{
+                let reaction=Date.now()-startTime;
+                result.innerText="Reaction Time: "+reaction+" ms";
+                ready=false;
+            }
+        };
+    }
+
+    /* ========= TIRED: REAL MEMORY GAME ========= */
+    if(mood === "tired"){
+        gameArea.innerHTML=`
+            <div id="board" style="display:grid;grid-template-columns:repeat(4,80px);gap:10px;justify-content:center;"></div>
+            <h3 id="status"></h3>
+            <button class="game-btn" onclick="loadGame('tired')">Restart</button>
+        `;
+
+        const board=document.getElementById("board");
+        const status=document.getElementById("status");
+
+        let emojis=["🍎","🍎","🍌","🍌","🍇","🍇","🍉","🍉"];
+        emojis.sort(()=>0.5-Math.random());
+
+        let first=null, second=null, lock=false, matches=0;
+
+        emojis.forEach(emoji=>{
+            const card=document.createElement("div");
+            card.innerText="?";
+            card.style.height="80px";
+            card.style.display="flex";
+            card.style.alignItems="center";
+            card.style.justifyContent="center";
+            card.style.fontSize="30px";
+            card.style.background="#3498db";
+            card.style.cursor="pointer";
+
+            card.onclick=function(){
+                if(lock || card.innerText!=="?") return;
+
+                card.innerText=emoji;
+
+                if(!first){
+                    first=card;
+                }else{
+                    second=card;
+                    lock=true;
+
+                    if(first.innerText===second.innerText){
+                        matches++;
+                        first=null;
+                        second=null;
+                        lock=false;
+                        if(matches===4){
+                            status.innerText="You matched all pairs! 🎉";
+                        }
+                    }else{
+                        setTimeout(()=>{
+                            first.innerText="?";
+                            second.innerText="?";
+                            first=null;
+                            second=null;
+                            lock=false;
+                        },1000);
+                    }
+                }
+            };
+
+            board.appendChild(card);
+        });
+    }
+}
+
+
+window.onload = function(){
+    renderChart();
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+```html id="d8k2mz"
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mood History Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+    font-family:Arial;
+    background:#0d1117;
+    color:white;
+    text-align:center;
+}
+
+/* CONTAINER */
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+/* TIMELINE */
+#historyList{
+    list-style:none;
+    padding:0;
+}
+#historyList li{
+    background:#161b22;
+    margin:8px;
+    padding:10px;
+    border-radius:8px;
+}
+
+/* CHART */
+#chart{
+    height:300px !important;
+}
+
+/* CALENDAR */
+#calendar{
+    display:grid;
+    grid-template-columns: repeat(7, 40px);
+    gap:5px;
+    justify-content:center;
+    margin-top:20px;
+}
+.day{
+    width:40px;
+    height:40px;
+    border-radius:5px;
+}
+.level-0{ background:#161b22; }
+.level-1{ background:#0e4429; }
+.level-2{ background:#006d32; }
+.level-3{ background:#26a641; }
+.level-4{ background:#39d353; }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Mood History Dashboard</h1>
+
+<!-- CHART -->
+<h2>Bar Chart</h2>
+<canvas id="chart"></canvas>
+
+<!-- TIMELINE -->
+<h2>🕒 Timeline (Date & Time)</h2>
+<ul id="historyList"></ul>
+
+<!-- CALENDAR -->
+<h2>📅 Activity Calendar</h2>
+<div id="calendar"></div>
+
+</div>
+
+<script>
+
+/* ===== LOAD DATA ===== */
+let data = JSON.parse(localStorage.getItem("moodHistory")) || [];
+
+/* ===== TIMELINE ===== */
+const list = document.getElementById("historyList");
+
+/* latest first */
+data.slice().reverse().forEach(item => {
+
+    let li = document.createElement("li");
+
+    li.innerText = item.mood.toUpperCase() + 
+                   "  |  " + 
+                   item.time;
+
+    list.appendChild(li);
+});
+
+
+/* ===== BAR CHART ===== */
+let count = {happy:0, relaxed:0, focused:0, tired:0};
+
+data.forEach(d=>{
+    if(count[d.mood] !== undefined){
+        count[d.mood]++;
+    }
+});
+
+new Chart(document.getElementById("chart"),{
+    type:"bar",
+    data:{
+        labels:["Happy","Relaxed","Focused","Tired"],
+        datasets:[{
+            label:"Mood Count",
+            data:[
+                count.happy,
+                count.relaxed,
+                count.focused,
+                count.tired
+            ]
+        }]
+    },
+    options:{
+        responsive:true,
+        maintainAspectRatio:false
+    }
+});
+
+
+/* ===== CALENDAR HEATMAP ===== */
+let dateCount = {};
+
+data.forEach(item=>{
+    let date = new Date(item.time).toISOString().split("T")[0];
+    if(!dateCount[date]) dateCount[date]=0;
+    dateCount[date]++;
+});
+
+const calendar = document.getElementById("calendar");
+
+for(let i=29;i>=0;i--){
+    let d = new Date();
+    d.setDate(d.getDate()-i);
+
+    let key = d.toISOString().split("T")[0];
+    let count = dateCount[key] || 0;
+
+    let div = document.createElement("div");
+    div.classList.add("day");
+
+    if(count===0) div.classList.add("level-0");
+    else if(count===1) div.classList.add("level-1");
+    else if(count===2) div.classList.add("level-2");
+    else if(count===3) div.classList.add("level-3");
+    else div.classList.add("level-4");
+
+    div.title = key + " → " + count + " moods";
+
+    calendar.appendChild(div);
+}
+
+</script>
+
+</body>
+</html>
+```

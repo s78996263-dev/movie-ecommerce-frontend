@@ -1,0 +1,167 @@
+body{
+background:#0b0b0b;
+font-family:Arial;
+margin:0;
+color:white;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 30px;
+background:#140018;
+box-shadow:0 0 10px #8000ff;
+}
+
+.logo{
+font-size:24px;
+color:#bb66ff;
+font-weight:bold;
+}
+
+.search-box input{
+width:350px;
+padding:8px;
+border:none;
+border-radius:5px;
+background:#2b0033;
+color:white;
+}
+
+.welcome{
+color:#bb66ff;
+}
+
+.icons i{
+margin-left:20px;
+cursor:pointer;
+font-size:18px;
+color:white;
+}
+
+.icons i:hover{
+color:#bb66ff;
+}
+
+/* SCROLL MESSAGE */
+
+.scrolling-text{
+background:#1a001f;
+padding:10px;
+color:#bb66ff;
+font-size:14px;
+}
+
+/* MOOD SECTION */
+
+.mood-section{
+text-align:center;
+margin-top:30px;
+}
+
+.mood-buttons button{
+margin:10px;
+padding:10px 20px;
+background:#8000ff;
+border:none;
+border-radius:5px;
+color:white;
+cursor:pointer;
+}
+
+.mood-buttons button:hover{
+background:#a64dff;
+}
+
+/* ============================= */
+/* ✅ FIXED PRODUCT LAYOUT */
+/* ============================= */
+
+/* Make products vertical (one by one) */
+.product-container,
+.product-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 40px;
+}
+
+/* Product Card (horizontal inside, clean UI) */
+.product-card{
+    background:#1a001f;
+    border-radius:10px;
+    box-shadow:0 0 10px #8000ff;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:15px;
+    max-width:1000px;
+    margin:auto;
+    transition:transform 0.3s;
+}
+
+.product-card:hover{
+    transform:scale(1.02);
+}
+
+/* Image on left */
+.product-card img,
+.product-image{
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+/* Center section */
+.product-details{
+    flex:1;
+    text-align:left;
+}
+
+.product-details h3{
+    margin:5px 0;
+    font-size:18px;
+}
+
+.product-details p{
+    margin:5px 0;
+    font-size:14px;
+}
+
+.product-price{
+    color:#bb66ff;
+    font-size:16px;
+}
+
+/* ✅ RIGHT SIDE BUTTON FIX */
+.product-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-left:auto;   /* 🔥 pushes buttons to rightmost */
+}
+
+/* Buttons */
+.product-buttons button{
+    padding:8px 12px;
+    border:none;
+    background:#8000ff;
+    color:white;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+.product-buttons button:hover{
+    background:#a64dff;
+}
+
+/* Rating */
+.rating{
+    color:#FFD700;
+    font-size:14px;
+    margin:5px 0;
+}
