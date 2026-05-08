@@ -1,3 +1,11 @@
+// CHECK LOGIN FIRST
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "login.html";
+}
+
+
 // ================================
 // Mood-Based E-Commerce Home JS
 // ================================
@@ -146,7 +154,7 @@ async function addToCart(productId, productName, price, image, quantity = 1) {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
 
-        const res = await fetch("https://movie-ecommerce-backend.onrender.com/cart/add " ,{
+        const res = await fetch("https://movie-ecommerce-backend.onrender.com/cart/add",{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
