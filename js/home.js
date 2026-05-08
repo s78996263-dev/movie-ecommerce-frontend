@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Load products from backend
 // ================================
 
-const API_URL = "http://localhost:8081/api/products";
+const API_URL = "https://movie-ecommerce-backend.onrender.com/api/products";
 
 async function loadProducts(mood = "") {
     let url = API_URL;
@@ -146,7 +146,7 @@ async function addToCart(productId, productName, price, image, quantity = 1) {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:8081/cart/add", {
+        const res = await fetch("https://movie-ecommerce-backend.onrender.com/cart/add " ,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -204,7 +204,7 @@ async function addToWishlist(productId, productName, price, image) {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:8081/wishlist/add", {
+        const res = await fetch("https://movie-ecommerce-backend.onrender.com/wishlist/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

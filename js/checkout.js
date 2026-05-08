@@ -79,7 +79,7 @@ async function makePayment(){
 
     try{
 
-        await fetch("http://localhost:8081/order", {
+        await fetch("https://movie-ecommerce-backend.onrender.com/order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -114,7 +114,7 @@ async function loadHistory(){
 
         const userId = localStorage.getItem("userId");
 
-        const response = await fetch("http://localhost:8081/order/" + userId);
+        const response = await fetch("https://movie-ecommerce-backend.onrender.com/order/" + userId);
 
         const history = await response.json();
 
@@ -171,7 +171,7 @@ async function clearHistory(){
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
-    await fetch("http://localhost:8081/orders/" + userId, {
+    await fetch("https://movie-ecommerce-backend.onrender.com/orders/" + userId, {
         method: "DELETE",
         headers: {
             "Authorization": "Bearer " + token

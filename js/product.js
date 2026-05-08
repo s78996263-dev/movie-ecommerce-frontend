@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8081/api/products";
+const API_URL = "https://movie-ecommerce-backend.onrender.com/api/products";
 
 async function loadProduct() {
     const params = new URLSearchParams(window.location.search);
@@ -53,7 +53,7 @@ function changeQty(val) {
 async function addToCart(productId, productName, price, image) {
     const userId = localStorage.getItem("userId");
 
-    await fetch("http://localhost:8081/cart/add", {
+    await fetch("https://movie-ecommerce-backend.onrender.com/cart/add", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({

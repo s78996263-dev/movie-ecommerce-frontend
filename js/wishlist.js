@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8081";
+const API_URL = "https://movie-ecommerce-backend.onrender.com";
 
 const container = document.getElementById("wishlistContainer");
 const count = document.getElementById("wishlistCount");

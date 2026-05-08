@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8081/user/login";
+const API_URL = "https://movie-ecommerce-backend.onrender.com/user/login";
 
 document.getElementById("loginForm").addEventListener("submit", async function(e){
 

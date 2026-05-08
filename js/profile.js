@@ -10,7 +10,7 @@ if (!userId) {
 window.onload = async function () {
 
     try {
-        const response = await fetch("http://localhost:8081/user/" + userId);
+        const response = await fetch("https://movie-ecommerce-backend.onrender.com/user/" + userId);
 
         if (response.ok) {
             const user = await response.json();
@@ -42,7 +42,7 @@ document.getElementById("profileForm").addEventListener("submit", async function
     };
 
     try {
-        const response = await fetch("http://localhost:8081/user/" + userId, {
+        const response = await fetch("https://movie-ecommerce-backend.onrender.com/user/" + userId, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
