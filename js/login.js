@@ -42,7 +42,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 
             console.log("Login successful:", data);
 
-            window.location.href = "index.html";
+            window.location.href = "/index.html";
 
         } else {
             // ❌ ERROR FROM BACKEND
