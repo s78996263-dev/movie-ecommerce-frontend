@@ -34,14 +34,14 @@ document.getElementById("registerForm").addEventListener("submit", async functio
         // ✅ SUCCESS
         if(response.ok){
             alert("Registration successful!");
-            window.location.href = "login.html";
+            window.location.href = "/login.html";
         } 
         // ❌ USER EXISTS
         else if(response.status === 409){
             errorMsg.innerText = "User already exists. Please login.";
 
             setTimeout(() => {
-                window.location.href = "login.html";
+                window.location.href = "/login.html";
             }, 2000);
         } 
         // ❌ OTHER ERROR
