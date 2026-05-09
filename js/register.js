@@ -42,7 +42,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 
             setTimeout(() => {
                alert("Registration successful!");
-window.location.href = "/login.html";
+window.location.href = "/index.html";
             }, 2000);
         } 
         // ❌ OTHER ERROR

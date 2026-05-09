@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>MoodCart Home</title>
+
+<link rel="stylesheet" href="/css/home.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="logo">
+MoodCart
+</div>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search products...">
+</div>
+
+<div class="welcome">
+<span id="welcomeUser"></span>
+</div>
+
+<div class="icons">
+
+<i class="fas fa-brain" onclick="goMoodPage()" title="Mood Dashboard"></i>
+<i class="fas fa-user" onclick="goProfile()"></i>
+
+<i class="fas fa-heart" onclick="goWishlist()"></i>
+
+<i class="fas fa-shopping-cart" onclick="goCart()"></i>
+
+<i class="fas fa-credit-card" onclick="goCheckout()"></i>
+
+<i class="fas fa-sign-out-alt" onclick="logout()"></i>
+
+</div>
+
+</header>
+
+<div class="scrolling-text">
+
+<marquee>
+MoodCart – A Smart Mood Based E-Commerce Platform that recommends products based on your emotions and mood.
+</marquee>
+
+</div>
+
+<div class="mood-section">
+
+<h2>Select Your Mood</h2>
+
+<div class="mood-buttons">
+
+<button onclick="filterMood('all')">All</button>
+<button onclick="filterMood('happy')">Happy</button>
+<button onclick="filterMood('relaxed')">Relaxed</button>
+<button onclick="filterMood('focused')">Focused</button>
+<button onclick="filterMood('tired')">Tired</button>
+
+</div>
+
+</div>
+
+<div id="product-container" class="product-grid"></div>
+
+<script src="/js/home.js"></script>
+
+</body>
+</html>
