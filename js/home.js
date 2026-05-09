@@ -71,6 +71,12 @@ function displayProducts(products) {
     const container = document.getElementById("product-container");
     container.innerHTML = "";
 
+     // ✅ FIX 4 — SAFETY CHECK (ADD HERE)
+    if (!products || products.length === 0) {
+        container.innerHTML = "<h3>No products found</h3>";
+        return;
+    }
+
     products.forEach(product => {
         const stars = generateStars(product.rating || 4);
 
@@ -79,7 +85,7 @@ function displayProducts(products) {
 
         card.innerHTML = `
             <img src="${product.image}" class="product-image"
-                 onclick="goToProduct('${product.id}')">
+                 onclick="goToProduct('${product._id}')"
 
             <div class="product-details">
                 <h3>${product.name}</h3>
@@ -89,11 +95,11 @@ function displayProducts(products) {
             </div>
 
             <div class="product-buttons">
-    <button onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
+    <button onclick="addToCart('${product._id}', '${product.name}', ${product.price}, '${product.image}')">
         Add to Cart
     </button>
 
-    <button onclick="addToWishlist('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
+    <button onclick="addToWishlist('${product._id}', '${product.name}', ${product.price}, '${product.image}')">
         Wishlist
     </button>
 

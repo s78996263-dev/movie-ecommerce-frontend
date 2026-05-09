@@ -1,13 +1,14 @@
 const API_URL = "https://movie-ecommerce-backend.onrender.com/api/products";
 
 async function loadProduct() {
+    console.log("RAW PRODUCTS:", products);
     const params = new URLSearchParams(window.location.search);
     const productId = params.get("id");
 
     const res = await fetch(API_URL);
     const products = await res.json();
 
-    const product = products.find(p => p.id === productId);
+    const product = products.find(p => p._id === productId);
 
     displayProduct(product);
 }
