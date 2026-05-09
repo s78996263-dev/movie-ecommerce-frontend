@@ -2,7 +2,7 @@
 const token = localStorage.getItem("token");
 
 if (!token) {
-    window.location.href = "login.html";
+    window.location.href = "/login.html";
 }
 
 
@@ -59,7 +59,9 @@ async function loadProducts(mood = "") {
 }
 
 // Initial load
-window.onload = () => loadProducts();
+document.addEventListener("DOMContentLoaded", () => {
+    loadProducts();
+});
 
 // ================================
 // Display products

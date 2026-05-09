@@ -41,7 +41,8 @@ document.getElementById("registerForm").addEventListener("submit", async functio
             errorMsg.innerText = "User already exists. Please login.";
 
             setTimeout(() => {
-                window.location.href = "/login.html";
+               alert("Registration successful!");
+window.location.href = "/login.html";
             }, 2000);
         } 
         // ❌ OTHER ERROR
