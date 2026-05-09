@@ -1,10 +1,15 @@
 // CHECK LOGIN FIRST
-const token = localStorage.getItem("token");
+document.addEventListener("DOMContentLoaded", () => {
 
-if (!token) {
-    window.location.href = "/login.html";
-}
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+        window.location.href = "/login.html";
+        return;
+    }
+
+    loadProducts();
+});
 
 // ================================
 // Mood-Based E-Commerce Home JS
@@ -59,9 +64,7 @@ async function loadProducts(mood = "") {
 }
 
 // Initial load
-document.addEventListener("DOMContentLoaded", () => {
-    loadProducts();
-});
+
 
 // ================================
 // Display products
